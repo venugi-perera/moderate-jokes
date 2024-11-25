@@ -1,0 +1,196 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Moderate Jokes Service API",
+    "description": "API documentation for Moderate Jokes Service."
+  },
+  "host": "localhost:3004",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Authenticate user and get a JWT token.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "admin@admin.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "admin123"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JWT token returned successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials."
+          }
+        }
+      }
+    },
+    "/jokes": {
+      "get": {
+        "summary": "Retrieve all jokes.",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Jokes retrieved successfully."
+          },
+          "500": {
+            "description": "Error fetching jokes."
+          }
+        }
+      }
+    },
+    "/jokes/{id}": {
+      "put": {
+        "summary": "Update a joke by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Joke updated successfully."
+          },
+          "404": {
+            "description": "Joke not found."
+          },
+          "500": {
+            "description": "Error updating joke."
+          }
+        }
+      }
+    },
+    "/jokes/{id}/approve": {
+      "post": {
+        "summary": "Approve a joke by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Joke approved successfully."
+          },
+          "404": {
+            "description": "Joke not found."
+          },
+          "500": {
+            "description": "Error approving joke."
+          }
+        }
+      }
+    },
+    "/joke-types": {
+      "post": {
+        "summary": "Create a new joke type.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Joke type created successfully."
+          },
+          "500": {
+            "description": "Error creating joke type."
+          }
+        }
+      }
+    },
+    "/jokes/{id}/reject": {
+      "post": {
+        "summary": "Reject and delete a joke by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Joke rejected successfully."
+          },
+          "404": {
+            "description": "Joke not found."
+          },
+          "500": {
+            "description": "Error rejecting joke."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {},
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}
